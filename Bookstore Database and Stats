@@ -1,0 +1,31 @@
+--Create a booksotre database with 15 items and 5 data columns
+
+CREATE TABLE inventory (id INTEGER PRIMARY KEY, title TEXT, price INTEGER, quantity INTEGER, section TEXT);
+
+INSERT INTO inventory VALUES (1, "The Martian", 16, 4, "Sci-Fi");
+INSERT INTO inventory VALUES (2, "Kiss Her Once for Me", 14, 2, "Romance");
+INSERT INTO inventory VALUES (3, "Women Talking", 12, 5, "Fiction");
+INSERT INTO inventory VALUES (4, "Digger", 40, 1, "Graphic Novel");
+INSERT INTO inventory VALUES (5, "Survivor Song", 12, 3, "Horror");
+INSERT INTO inventory VALUES (6, "Hell Bent", 21, 4, "Fantasy");
+INSERT INTO inventory VALUES (7, "Tender is the Flesh", 12, 3, "Horror");
+INSERT INTO inventory VALUES (8, "Gideon the Ninth", 16, 5, "Fantasy");
+INSERT INTO inventory VALUES (9, "The Book Eaters", 18, 2, "Fantasy");
+INSERT INTO inventory VALUES (10, "Last Night in Montreal", 14, 1, "Fiction");
+INSERT INTO inventory VALUES (11, "The Fellowship of the Ring", 12, 6, "Fantasy");
+INSERT INTO inventory VALUES(12, "Day Zero", 12, 3, "Sci-Fi");
+INSERT INTO inventory VALUES(13, "The Glass Hotel", 14, 2, "Fiction");
+INSERT INTO inventory VALUES(14, "Sea of Tranquility", 18, 5, "Sci-Fi");
+INSERT INTO inventory VALUES(15, "Baby Teeth", 14, 2, "Horror");
+
+--Display the database ordered by ascending price
+SELECT * FROM inventory ORDER BY price;
+
+--How many physical books are located in each section of the bookstore?
+SELECT section, SUM (quantity) FROM inventory GROUP BY section;
+
+--How many book titles are located in each section of the bookstore?
+SELECT section, COUNT(*) FROM inventory GROUP BY section
+
+--What is the average price for a book at this store?
+SELECT AVG(price) "average book price" FROM inventory;
