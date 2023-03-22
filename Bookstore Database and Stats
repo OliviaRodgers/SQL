@@ -1,4 +1,4 @@
---Create a booksotre database with 15 items and 5 data columns
+--Create a bookstore database with 15 items and 5 data columns
 
 CREATE TABLE inventory (id INTEGER PRIMARY KEY, title TEXT, price INTEGER, quantity INTEGER, section TEXT);
 
