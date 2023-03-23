@@ -1,0 +1,72 @@
+--Create 2 tables, one for the ten authors a person read from during the year and another that outlines data about the books they read from that author
+
+CREATE TABLE authors (id INTEGER PRIMARY KEY, fullname  TEXT);
+INSERT INTO authors VALUES (1, "Leigh Bardugo");
+INSERT INTO authors VALUES (2, "Olivie Blake");
+INSERT INTO authors VALUES (3, "Steven King");
+INSERT INTO authors VALUES (4, "George RR Martin");
+INSERT INTO authors VALUES (5, "Stephanie Meyer");
+INSERT INTO authors VALUES (6, "JRR Tolkein");
+INSERT INTO authors VALUES (7, "TJ Klune");
+INSERT INTO authors VALUES (8, "Emily St John Mendel");
+INSERT INTO authors VALUES (9, "Taylor Jenkins Reid");
+INSERT INTO authors VALUES (10, "William Goldman");
+
+
+CREATE TABLE works (id INTEGER PRIMARY KEY, author_id INTEGER, title TEXT, release_year INTEGER, genre TEXT, pages INTEGER, goodreads_rating INTEGER);
+INSERT INTO works VALUES (1,10,"The Princess Bride",1973,"Fantasy",456,4.26);
+INSERT INTO works VALUES (2,9,"The Seven Husbands of Evelyn Hugo",2017,"Fiction",389,4.46);
+INSERT INTO works VALUES (3,9,"Daisy Jones and the Six",2019,"Fiction",355,4.24);
+INSERT INTO works VALUES (4,8,"Last Night in Montreal",2009,"Fiction",230,3.72);
+INSERT INTO works VALUES (5,8, "Station Eleven",2014,"Fiction",333,4.07);
+INSERT INTO works VALUES (6,8,"Sea of Tranquility",2022,"Fiction",272,4.13);
+INSERT INTO works VALUES (7,8,"The Glass Hotel", 2020,"Fiction",302,3.69);
+INSERT INTO works VALUES (8,7,"The House in the Cerulean Sea",2020,"Fantasy",394,4.44);
+INSERT INTO works VALUES (9,7,"Under the Whispering Door",2021,"Fantasy",373,4.18);
+INSERT INTO works VALUES (10,6,"The Return of the King",1955,"Fantasy",432,4.55);
+INSERT INTO works VALUES (11,6,"The Two Towers",1954,"Fantasy",448,4.47);
+INSERT INTO works VALUES (12,6,"The Fellowship of the Ring",1954,"Fiction",432,4.38);
+INSERT INTO works VALUES (13,5,"The Host",2008,"Sci-Fi",624,3.85);
+INSERT INTO works VALUES (14,5,"Midnight Sun",2020,"Fantasy",658,3.73);
+INSERT INTO works VALUES (15,4,"Fire and Blood",2018,"Fantasy",719,3.99);
+INSERT INTO works VALUES (16,3,"Hearts in Atlantis",1999,"Fantasy",640,3.85);
+INSERT INTO works VALUES (17,3,"The Shining",1977,"Horror",659,4.26);
+INSERT INTO works VALUES (18,3,"It",1986,"Horror",1116,4.25);
+INSERT INTO works VALUES (19,2,"The Atlas Six",2020,"Fantasy",556,3.71);
+INSERT INTO works VALUES (20,2,"The Atlas Paradox",2022,"Fantasy",397,3.68);
+INSERT INTO works VALUES (21,1,"Ninth House",2019,"Fantasy",461,4.04);
+INSERT INTO works VALUES (22,1,"Hell Bent",2023,"Fantasy",481,4.26);
+
+
+--First, create a query that combines all of the data (except the ids) from the tables as a reading summary
+SELECT a.author_name, w.title, w.release_year, w.genre, w.pages, w.goodreads_rating FROM authors a
+JOIN works w
+ON a.id = w.author_id;
+
+--How many pages did this person read over the year?
+SELECT SUM(pages) "Total Pages Read" FROM works;
+
+--How many pages did they read, by author?
+SELECT a.author_name "Author", SUM(w.pages) "Total Pages Read" FROM authors a
+JOIN works w
+ON a.id = w.author_id
+GROUP BY a.author_name;
+
+--What was the average combined rating (on GoodReads) of the books read?
+SELECT ROUND(AVG(goodreads_rating),2) "Average Rating of Books" FROM works;
+
+--What was the average rating for the books read, by author?
+SELECT a.author_name "Author", ROUND(AVG(w.goodreads_rating),2) "Average Rating of Books" From authors a
+JOIN works w
+ON a.id = w.author_id
+GROUP BY a.author_name;
+
+--How many books read fell into each reading genre?
+SELECT COUNT(*), genre "Genre" FROM works GROUP BY genre;
+
+--What was the average publication year for the books read, by author, from newest to oldest?
+SELECT a.author_name, ROUND(AVG(w.release_year)) "Average Publication Date" FROM authors a
+JOIN works w
+ON a.id = w.author_id
+GROUP BY a.author_name
+ORDER BY w.release_year desc;
